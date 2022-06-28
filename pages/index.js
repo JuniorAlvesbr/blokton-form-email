@@ -1,4 +1,10 @@
-import { Container, Typography, Box, Stack, TextField } from '@mui/material';
+import { useState } from 'react'
+import LoadingButton from '@mui/lab/LoadingButton';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import SendIcon from '@mui/icons-material/Send';
+
+import { Container, Typography, Box, Stack, TextField, Button } from '@mui/material';
 import { docPessoal, estadoCivil, endereco, empresa, referencias, banco } from '../src/inputText'
 
 const boxStyle = { p: 2, border: '1px solid #c4c4c4', borderRadius: '10px' }
@@ -12,7 +18,7 @@ const createInputText = (props) => {
         name={item.name}
         label={item.label}
         placeholder={item.placeholder}
-        required={item.required}
+        required={false}
         variant="standard"
         fullWidth
         margin="normal"
@@ -21,8 +27,12 @@ const createInputText = (props) => {
   )
 }
 
-
 export default function Index() {
+  const [loading, setLoading] = useState(false);
+  function handleClick() {
+    setLoading(true);
+  }
+
   return (
     <Container maxWidth="md">
       <Box sx={{ my: 4 }}>
@@ -69,6 +79,20 @@ export default function Index() {
               Dados do Banco:
             </Typography>
             {createInputText(banco)}
+          </Box>
+
+          <Box>
+            <LoadingButton
+              size="large"
+              onClick={handleClick}
+              endIcon={<SendIcon />}
+              loading={loading}
+              loadingPosition="end"
+              variant="contained"
+              fullWidth
+            >
+              Enviar
+            </LoadingButton>
           </Box>
 
         </Stack>
