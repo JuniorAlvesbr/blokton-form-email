@@ -25,6 +25,17 @@ const createInputText = (props) => {
   )
 }
 
+const fetchApi = async (data) => {
+  console.log(data)
+  const response = await fetch('/api/sendEmail', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+
+  console.log(await response.json())
+}
+
 export default function Home() {
   const formRef = useRef(null)
   const [loading, setLoading] = useState(false);
@@ -35,21 +46,22 @@ export default function Home() {
 
   function handleSubmit(e) {
     e.preventDefault()
+    const formInputs = [...formRef.current.elements]
 
-    const getTextFormInputs = [...formRef.current.elements].filter(
-      element => element.type === "text"
-    )
+    const getTextFormInputs = element => element.type === "text"
 
-    const createObjectFromInputsValue = getTextFormInputs.reduce(
-      (acc, input) => {
-        return {
-          ...acc,
-          [input.name]: input.value
-        }
-      }, ""
-    )
+    const formInputText = formInputs.filter(getTextFormInputs)
 
-    console.log(createObjectFromInputsValue)
+    const createObjectFromInputValues = (acc, input) => {
+      return {
+        ...acc,
+        [input.name]: input.value.trim()
+      }
+    }
+
+    const getFormObject = formInputText.reduce(createObjectFromInputValues, "")
+
+    fetchApi(getFormObject)
   }
 
   return (
