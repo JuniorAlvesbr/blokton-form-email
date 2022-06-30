@@ -97,8 +97,8 @@ export const endereco = [
     type: "text",
     id: "estado",
     name: "Estado",
-    label: "estado",
-    placeholder: "Rua",
+    label: "Estado",
+    placeholder: "",
     required: false
   },
 ]

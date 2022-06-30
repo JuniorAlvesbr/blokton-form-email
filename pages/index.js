@@ -1,7 +1,5 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import LoadingButton from '@mui/lab/LoadingButton';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import SendIcon from '@mui/icons-material/Send';
 
 import { Container, Typography, Box, Stack, TextField, Button } from '@mui/material';
@@ -27,10 +25,31 @@ const createInputText = (props) => {
   )
 }
 
-export default function Index() {
+export default function Home() {
+  const formRef = useRef(null)
   const [loading, setLoading] = useState(false);
-  function handleClick() {
+
+  function handleLoadingButton() {
     setLoading(true);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault()
+
+    const getTextFormInputs = [...formRef.current.elements].filter(
+      element => element.type === "text"
+    )
+
+    const createObjectFromInputsValue = getTextFormInputs.reduce(
+      (acc, input) => {
+        return {
+          ...acc,
+          [input.name]: input.value
+        }
+      }, ""
+    )
+
+    console.log(createObjectFromInputsValue)
   }
 
   return (
@@ -40,7 +59,7 @@ export default function Index() {
           Formulário da Blockton
         </Typography>
 
-        <Stack component="form" spacing={4}>
+        <Stack component="form" ref={formRef} spacing={4} method="POST" onSubmit={handleSubmit}>
 
           <Box sx={boxStyle}>
             {createInputText(docPessoal)}
@@ -83,8 +102,9 @@ export default function Index() {
 
           <Box>
             <LoadingButton
+              type="submit"
               size="large"
-              onClick={handleClick}
+              onClick={handleLoadingButton}
               endIcon={<SendIcon />}
               loading={loading}
               loadingPosition="end"
@@ -93,6 +113,7 @@ export default function Index() {
             >
               Enviar
             </LoadingButton>
+            <Button variant='contained' fullWidth type="submit">Enviar</Button>
           </Box>
 
         </Stack>
