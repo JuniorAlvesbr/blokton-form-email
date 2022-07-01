@@ -2,14 +2,14 @@ import { useRef, useState } from 'react'
 import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send';
 import InputText from '../components/InputText';
+import InputRadio from '../components/InputRadio';
 
-import { Container, Typography, Box, Stack, TextField, Button } from '@mui/material';
-import { docPessoal, estadoCivil, endereco, empresa, referencias, banco } from '../src/inputText'
+import { Container, Typography, Box, Stack, Button } from '@mui/material';
+import { docPessoal, estadoCivil, conjugeInfo, endereco, tempoResidencia, empresa, referencias, banco } from '../src/inputText'
 
 const boxStyle = { p: 2, border: '1px solid #c4c4c4', borderRadius: '10px' }
 
 const fetchApi = async (data) => {
-  console.log(data)
   const response = await fetch('/api/sendEmail', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -20,8 +20,14 @@ const fetchApi = async (data) => {
 }
 
 export default function Home() {
-  const formRef = useRef(null)
   const [loading, setLoading] = useState(false);
+  const [civilRadioValue, setCivilRadioValue] = useState("Solteiro")
+  const [addressRadioValue, setAddressRadioValue] = useState("Solteiro")
+
+  const formRef = useRef(null)
+
+  const handleCivilRadioChange = (e) => setCivilRadioValue(e.target.value)
+  const handleAddressRadioChange = (e) => setAddressRadioValue(e.target.value)
 
   function handleLoadingButton() {
     setLoading(true);
@@ -44,6 +50,11 @@ export default function Home() {
 
     const getFormObject = formInputText.reduce(createObjectFromInputValues, "")
 
+    getFormObject["estadoCivil"] = civilRadioValue
+    getFormObject["Tempo Residencia"] = addressRadioValue
+
+    console.log(getFormObject)
+
     fetchApi(getFormObject)
   }
 
@@ -64,14 +75,32 @@ export default function Home() {
             <Typography variant="h4" component="h1" gutterBottom color="secondary.main">
               Estado Civil:
             </Typography>
-            <InputText props={estadoCivil} />
+
+            <InputRadio
+              id="estadoCivil"
+              label="Estado Civil"
+              list={estadoCivil}
+              radioValue={civilRadioValue}
+              handleChange={handleCivilRadioChange}
+            />
+
+            <InputText props={conjugeInfo} />
           </Box>
 
           <Box sx={boxStyle}>
             <Typography variant="h4" component="h1" gutterBottom color="secondary.main">
               Endereço:
             </Typography>
+
             <InputText props={endereco} />
+
+            <InputRadio
+              id="tempoResidencia"
+              label="Tempo Residência"
+              list={tempoResidencia}
+              radioValue={addressRadioValue}
+              handleChange={handleAddressRadioChange}
+            />
           </Box>
 
           <Box sx={boxStyle}>

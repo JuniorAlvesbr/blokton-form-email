@@ -41,7 +41,9 @@ export const docPessoal = [
   },
 ]
 
-export const estadoCivil = [
+export const estadoCivil = ["Solteiro", "Casado", "Separado", "Viuvo"]
+
+export const conjugeInfo = [
   {
     type: "text",
     id: "nameConjuge",
@@ -102,6 +104,8 @@ export const endereco = [
     required: false
   },
 ]
+
+export const tempoResidencia = ["menos de 1 ano", "1 a 3 anos", "3 a 5 anos", "acima de 5 anos"]
 
 export const empresa = [
   {
