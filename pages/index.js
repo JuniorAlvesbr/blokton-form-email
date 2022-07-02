@@ -3,6 +3,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send';
 import InputText from '../components/InputText';
 import InputRadio from '../components/InputRadio';
+import UploadImage from '../components/UploadImage';
 
 import { Container, Typography, Box, Stack, Button } from '@mui/material';
 import { docPessoal, estadoCivil, conjugeInfo, endereco, tempoResidencia, empresa, referencias, banco } from '../src/inputText'
@@ -69,6 +70,7 @@ export default function Home() {
 
           <Box sx={boxStyle}>
             <InputText props={docPessoal} />
+            <UploadImage id="imagePessoal" />
           </Box>
 
           <Box sx={boxStyle}>
@@ -92,6 +94,8 @@ export default function Home() {
               Endereço:
             </Typography>
 
+            <UploadImage id="address" />
+
             <InputText props={endereco} />
 
             <InputRadio
@@ -107,6 +111,7 @@ export default function Home() {
             <Typography variant="h4" component="h1" gutterBottom color="secondary.main">
               Dados da Empresa:
             </Typography>
+            <UploadImage id="renda" />
             <InputText props={empresa} />
           </Box>
 
