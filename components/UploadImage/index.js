@@ -9,7 +9,7 @@ const Input = styled('input')({
   display: 'none',
 });
 
-export default function UploadImage({ id }) {
+export default function UploadImage({ id, text }) {
   const [image, setImage] = useState()
 
   const handleImage = (e) => {
@@ -21,7 +21,7 @@ export default function UploadImage({ id }) {
       <label htmlFor={id}>
         <Input accept="image/*" id={id} type="file" onChange={handleImage} />
         <Button variant="contained" aria-label="upload picture" component="span" startIcon={<PhotoCamera />}>
-          Tirar Foto da CNH
+          {text}
         </Button>
       </label>
 
@@ -29,7 +29,6 @@ export default function UploadImage({ id }) {
         {image &&
           <Image
             src={URL.createObjectURL(image)}
-            alt="Picture of the author"
             width={200}
             height={200}
           />}

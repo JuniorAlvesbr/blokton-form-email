@@ -76,7 +76,8 @@ export default function Home() {
 
           <Box sx={boxStyle}>
             <InputText props={docPessoal} />
-            <UploadImage id="imagePessoal" />
+
+            <UploadImage id="docPessoal" text="Tirar foto da CNH ou RG" />
           </Box>
 
           <Box sx={boxStyle}>
@@ -100,7 +101,7 @@ export default function Home() {
               Endereço:
             </Typography>
 
-            <UploadImage id="address" />
+            <UploadImage id="address" text="Tirar foto do comprovante de endereço" />
 
             <InputText props={endereco} />
 
@@ -117,8 +118,10 @@ export default function Home() {
             <Typography variant="h4" component="h1" gutterBottom color="secondary.main">
               Dados da Empresa:
             </Typography>
-            <UploadImage id="renda" />
+
             <InputText props={empresa} />
+
+            <UploadImage id="renda" text="Tirar foto do comprovante de Renda" />
           </Box>
 
           <Box sx={boxStyle}>
