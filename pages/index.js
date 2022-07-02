@@ -5,7 +5,7 @@ import InputText from '../components/InputText';
 import InputRadio from '../components/InputRadio';
 import UploadImage from '../components/UploadImage';
 
-import { Container, Typography, Box, Stack, Button } from '@mui/material';
+import { Container, Typography, Box, Stack } from '@mui/material';
 import { docPessoal, estadoCivil, conjugeInfo, endereco, tempoResidencia, empresa, referencias, banco } from '../src/inputText'
 
 const boxStyle = { p: 2, border: '1px solid #c4c4c4', borderRadius: '10px' }
@@ -30,12 +30,15 @@ export default function Home() {
   const handleCivilRadioChange = (e) => setCivilRadioValue(e.target.value)
   const handleAddressRadioChange = (e) => setAddressRadioValue(e.target.value)
 
-  function handleLoadingButton() {
-    setLoading(true);
+  function handleLoadingButton(active) {
+    setLoading(active);
   }
 
   function handleSubmit(e) {
     e.preventDefault()
+
+    handleLoadingButton(true)
+
     const formInputs = [...formRef.current.elements]
 
     const getTextFormInputs = element => element.type === "text"
@@ -54,19 +57,22 @@ export default function Home() {
     getFormObject["estadoCivil"] = civilRadioValue
     getFormObject["Tempo Residencia"] = addressRadioValue
 
-    console.log(getFormObject)
+    setTimeout(async () => {
+      await fetchApi(getFormObject)
+      handleLoadingButton(false)
+    }, 5000)
 
-    fetchApi(getFormObject)
   }
 
   return (
+
     <Container maxWidth="md">
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom align='center' color="primary.main">
           Formulário da Blockton
         </Typography>
 
-        <Stack component="form" ref={formRef} spacing={4} method="POST" onSubmit={handleSubmit}>
+        <Stack component="form" ref={formRef} spacing={4} method="POST">
 
           <Box sx={boxStyle}>
             <InputText props={docPessoal} />
@@ -133,7 +139,7 @@ export default function Home() {
             <LoadingButton
               type="submit"
               size="large"
-              onClick={handleLoadingButton}
+              onClick={handleSubmit}
               endIcon={<SendIcon />}
               loading={loading}
               loadingPosition="end"
@@ -142,7 +148,6 @@ export default function Home() {
             >
               Enviar
             </LoadingButton>
-            <Button variant='contained' fullWidth type="submit">Enviar</Button>
           </Box>
 
         </Stack>
