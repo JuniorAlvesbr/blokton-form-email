@@ -18,6 +18,7 @@
     "@mui/icons-material": "latest",
     "@mui/lab": "^5.0.0-alpha.88",
     "@mui/material": "latest",
+    "@sendgrid/mail": "^7.7.0",
     "next": "latest",
     "prop-types": "latest",
     "react": "latest",
