@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Image from 'next/Image';
+import Image from 'next/image';
 import { styled } from '@mui/material/styles';
 import { Box, Button } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
@@ -17,7 +17,7 @@ export default function UploadImage({ id, text }) {
   }
 
   return (
-    <Stack direction="row" alignItems="center" spacing={2}>
+    <Stack alignItems="center" spacing={2}>
       <label htmlFor={id}>
         <Input accept="image/*" id={id} type="file" onChange={handleImage} />
         <Button variant="contained" aria-label="upload picture" component="span" startIcon={<PhotoCamera />}>
@@ -29,7 +29,7 @@ export default function UploadImage({ id, text }) {
         {image &&
           <Image
             src={URL.createObjectURL(image)}
-            width={200}
+            width={300}
             height={200}
           />}
       </Box>
