@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send';
 import InputText from '../components/InputText';
@@ -10,6 +10,16 @@ import { docPessoal, estadoCivil, conjugeInfo, endereco, tempoResidencia, empres
 
 const boxStyle = { p: 2, border: '1px solid #c4c4c4', borderRadius: '10px' }
 
+const fetchApi = async (data) => {
+  const response = await fetch('/api/sendEmail', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+
+  console.log(await response.json())
+}
+
 export default function Home() {
   const [loading, setLoading] = useState(false);
   const [civilRadioValue, setCivilRadioValue] = useState("Solteiro")
@@ -20,35 +30,42 @@ export default function Home() {
   const handleCivilRadioChange = (e) => setCivilRadioValue(e.target.value)
   const handleAddressRadioChange = (e) => setAddressRadioValue(e.target.value)
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-
-    const formData = new FormData()
-
-    const formElements = [...formRef.current.elements]
-
-    const getElementText = formElements.filter(element => element.type === 'text')
-
-    getElementText.forEach(element => formData.append(element.name, element.value.trim()))
-
-    formData.append('estadoCivil', civilRadioValue)
-    formData.append('addressTime', addressRadioValue)
-
-    for (const value of formData.values()) {
-      console.log(value)
-    }
-
-    fetch('/api/send', {
-      method: "POST",
-      headers: { 'Content-Type': 'multipart/form-data' },
-      body: formData
-    })
-      .then(response => console.log(response))
-      .catch(err => console.log(err))
+  function handleLoadingButton(active) {
+    setLoading(active);
   }
 
+  function handleSubmit(e) {
+    e.preventDefault()
+
+    handleLoadingButton(true)
+
+    const formInputs = [...formRef.current.elements]
+
+    const getTextFormInputs = element => element.type === "text"
+
+    const formInputText = formInputs.filter(getTextFormInputs)
+
+    const createObjectFromInputValues = (acc, input) => {
+      return {
+        ...acc,
+        [input.name]: input.value.trim()
+      }
+    }
+
+    const getFormObject = formInputText.reduce(createObjectFromInputValues, "")
+
+    getFormObject["estadoCivil"] = civilRadioValue
+    getFormObject["Tempo Residencia"] = addressRadioValue
+
+    setTimeout(async () => {
+      await fetchApi(getFormObject)
+      handleLoadingButton(false)
+    }, 5000)
+
+  }
 
   return (
+
     <Container maxWidth="md">
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom align='center' color="primary.main">

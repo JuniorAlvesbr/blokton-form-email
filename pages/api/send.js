@@ -1,15 +1,15 @@
 import formidable from 'formidable'
 import fs from 'fs'
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
+// export const config = {
+//   api: {
+//     bodyParser: false,
+//   },
+// }
 
 export default async function handler(req, res) {
   const isPost = req.method
-
+  // console.log(req.body)
   if (isPost !== 'POST') {
     res.status(405).send("method unathorized")
     return
