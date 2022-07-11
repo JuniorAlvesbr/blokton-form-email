@@ -15,6 +15,10 @@ export default function Home() {
   const [civilRadioValue, setCivilRadioValue] = useState("Solteiro")
   const [addressRadioValue, setAddressRadioValue] = useState("Solteiro")
 
+  const [docImage, setDocImage] = useState()
+  const [addressImage, setAddressImage] = useState()
+  const [salarioImage, setSalarioImage] = useState()
+
   const formRef = useRef(null)
 
   const handleCivilRadioChange = (e) => setCivilRadioValue(e.target.value)
@@ -34,13 +38,12 @@ export default function Home() {
     formData.append('estadoCivil', civilRadioValue)
     formData.append('addressTime', addressRadioValue)
 
-    for (const value of formData.values()) {
-      console.log(value)
-    }
+    docImage && formData.append('docPessoal', docImage)
+    addressImage && formData.append('docAddress', addressImage)
+    salarioImage && formData.append('docSalario', salarioImage)
 
     fetch('/api/send', {
       method: "POST",
-      headers: { 'Content-Type': 'multipart/form-data' },
       body: formData
     })
       .then(response => console.log(response))
@@ -60,7 +63,12 @@ export default function Home() {
           <Box sx={boxStyle}>
             <InputText props={docPessoal} />
 
-            <UploadImage id="docPessoal" text="Tirar foto da CNH ou RG" />
+            <UploadImage
+              id="docPessoal"
+              text="Tirar foto da CNH ou RG"
+              image={docImage}
+              setImage={setDocImage}
+            />
           </Box>
 
           <Box sx={boxStyle}>
@@ -84,7 +92,12 @@ export default function Home() {
               Endereço:
             </Typography>
 
-            <UploadImage id="address" text="Tirar foto do comprovante de endereço" />
+            <UploadImage
+              id="address"
+              text="Tirar foto do comprovante de endereço"
+              image={addressImage}
+              setImage={setAddressImage}
+            />
 
             <InputText props={endereco} />
 
@@ -104,7 +117,12 @@ export default function Home() {
 
             <InputText props={empresa} />
 
-            <UploadImage id="renda" text="Tirar foto do comprovante de Renda" />
+            <UploadImage
+              id="renda"
+              text="Tirar foto do comprovante de Renda"
+              image={salarioImage}
+              setImage={setSalarioImage}
+            />
           </Box>
 
           <Box sx={boxStyle}>

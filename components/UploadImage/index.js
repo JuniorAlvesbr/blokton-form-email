@@ -9,8 +9,7 @@ const Input = styled('input')({
   display: 'none',
 });
 
-export default function UploadImage({ id, text }) {
-  const [image, setImage] = useState()
+export default function UploadImage({ id, text, image, setImage }) {
 
   const handleImage = (e) => {
     setImage(e.target.files[0])
