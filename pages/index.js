@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send';
 import InputText from '../components/InputText';
@@ -18,7 +18,6 @@ export default function Home() {
   const [docImage, setDocImage] = useState()
   const [addressImage, setAddressImage] = useState()
   const [salarioImage, setSalarioImage] = useState()
-
   const formRef = useRef(null)
 
   const handleCivilRadioChange = (e) => setCivilRadioValue(e.target.value)
@@ -26,6 +25,8 @@ export default function Home() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    setLoading(true)
 
     const formData = new FormData()
 
@@ -46,7 +47,10 @@ export default function Home() {
       method: "POST",
       body: formData
     })
-      .then(response => console.log(response))
+      .then(response => {
+        setLoading(false)
+        console.log(response)
+      })
       .catch(err => console.log(err))
   }
 

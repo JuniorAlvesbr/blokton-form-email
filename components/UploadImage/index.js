@@ -16,7 +16,7 @@ export default function UploadImage({ id, text, image, setImage }) {
   }
 
   return (
-    <Stack alignItems="center" spacing={2}>
+    <Stack spacing={2}>
       <label htmlFor={id}>
         <Input accept="image/*" id={id} type="file" onChange={handleImage} />
         <Button variant="contained" aria-label="upload picture" component="span" startIcon={<PhotoCamera />}>
