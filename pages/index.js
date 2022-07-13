@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
 import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send';
@@ -18,7 +19,9 @@ export default function Home() {
   const [docImage, setDocImage] = useState()
   const [addressImage, setAddressImage] = useState()
   const [salarioImage, setSalarioImage] = useState()
+
   const formRef = useRef(null)
+  const router = useRouter()
 
   const handleCivilRadioChange = (e) => setCivilRadioValue(e.target.value)
   const handleAddressRadioChange = (e) => setAddressRadioValue(e.target.value)
@@ -49,11 +52,12 @@ export default function Home() {
     })
       .then(response => {
         setLoading(false)
-        console.log(response)
+        router.push('success')
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        router.push('/fail')
+      })
   }
-
 
   return (
     <Container maxWidth="md">

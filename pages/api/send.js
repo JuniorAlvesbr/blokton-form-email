@@ -20,36 +20,35 @@ export default async function handler(req, res) {
     return
   }
 
-  await handleData(req)
-
-  res.status(200).send("arquivos enviados")
-}
-
-const handleData = async (req) => {
-  const form = formidable({ uploadDir: './public/uploads' })
-
-  form.parse(req, (err, fields, files) => {
-
-    const renameFiles = (item) => {
-      console.log(item)
-      const oldPath = files[item].filepath
-      const newPath = `./public/uploads/${item}.jpg`
-      fs.rename(oldPath, newPath, (err) => err)
-    }
-
-    Object.keys(files).forEach(renameFiles)
-
-    sendMessage(fields)
-
-  })
-}
-
-const sendMessage = (body) => {
+  const body = await handleData(req)
   const message = createMessage(body)
 
   sgMail.send(message)
-    .then(console.log('mensagem enviada com sucesso'))
-    .catch(err => console.log(err))
+    .then(res.status(200).send('ok'))
+    .catch(err => res.send(err))
+}
+
+const handleData = (req) => {
+  const form = new formidable.IncomingForm()
+  return new Promise(
+    function (resolve, reject) {
+      form.uploadDir = './public/uploads'
+      form.keepExtensions = true;
+
+      form.parse(req, (err, fields, files) => {
+        if (err) return reject(err)
+        Object.keys(files).forEach(renameFiles)
+        resolve(fields)
+      })
+    }
+  )
+}
+
+const renameFiles = (item) => {
+  console.log(item)
+  const oldPath = files[item].filepath
+  const newPath = `./public/uploads/${item}.jpg`
+  fs.rename(oldPath, newPath, (err) => err)
 }
 
 const createMessage = (body) => {
@@ -65,7 +64,7 @@ const createMessage = (body) => {
   return {
     to: 'jrnalves@gmail.com',
     from: 'jr.junior@live.com',
-    subject: `Formulario do ${body.name}`,
+    subject: `Formulario do ${body.Nome}`,
     text: 'Formulario de dados',
     html: `<div>${message}</div>`,
     attachments: [
