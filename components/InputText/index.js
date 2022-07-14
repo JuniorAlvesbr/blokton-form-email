@@ -13,6 +13,7 @@ export default function InputText({ props }) {
         variant="standard"
         fullWidth
         margin="normal"
+        onChange={item.mask}
       />
     ))
   )

@@ -13,7 +13,17 @@ export const docPessoal = [
     name: "CPF",
     label: "CPF",
     placeholder: "000.000.000-00",
-    required: true
+    required: true,
+    mask: (e) => {
+      let cpf = e.target.value;
+
+      cpf = cpf.replace(/\D/g, "")
+      cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+      cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+      cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+      e.target.value = cpf;
+    }
   },
   {
     type: "text",
@@ -21,7 +31,15 @@ export const docPessoal = [
     name: "Celular",
     label: "Celular",
     placeholder: "(xx) xxxxx-xxxx",
-    required: true
+    required: true,
+    mask: (e) => {
+      let tel = e.target.value;
+
+      tel = tel.replace(/\D/g, "");
+      tel = tel.replace(/^(\d{2})(\d)/g, "($1) $2");
+
+      e.target.value = tel;
+    }
   },
   {
     type: "text",
@@ -29,7 +47,15 @@ export const docPessoal = [
     name: "Telefone",
     label: "Telefone",
     placeholder: "(xx) xxxxx-xxxx",
-    required: false
+    required: false,
+    mask: (e) => {
+      let tel = e.target.value;
+
+      tel = tel.replace(/\D/g, "");
+      tel = tel.replace(/^(\d{2})(\d)/g, "($1) $2");
+
+      e.target.value = tel;
+    }
   },
   {
     type: "email",
@@ -58,7 +84,23 @@ export const conjugeInfo = [
     name: "Nascimento Conjuge",
     label: "Data de nascimento do esposo(a)",
     placeholder: "dd/mm/aaaa",
-    required: false
+    required: false,
+    mask: (e) => {
+      let data = e.target.value;
+
+      if (data.length == 2) {
+        data = data + '/';
+        e.target.value = data;
+        return true;
+      }
+
+      if (data.length == 5) {
+        data = data + '/';
+        e.target.value = data;
+        return true;
+      }
+    }
+
   },
 ]
 
@@ -69,7 +111,15 @@ export const endereco = [
     name: "CEP",
     label: "CEP",
     placeholder: "",
-    required: false
+    required: false,
+    mask: (e) => {
+      let cep = e.target.value;
+
+      cep = cep.replace(/\D/g, "")
+      cep = cep.replace(/^(\d{5})(\d)/, "$1-$2");
+
+      e.target.value = cep;
+    }
   },
   {
     type: "text",
@@ -122,7 +172,15 @@ export const empresa = [
     name: "Telefone Comercial",
     label: "Telefone Comercial",
     placeholder: "(xx) xxxxx-xxxx",
-    required: false
+    required: false,
+    mask: (e) => {
+      let tel = e.target.value;
+
+      tel = tel.replace(/\D/g, "");
+      tel = tel.replace(/^(\d{2})(\d)/g, "($1) $2");
+
+      e.target.value = tel;
+    }
   },
   {
     type: "text",
@@ -130,7 +188,22 @@ export const empresa = [
     name: "Data de admissão",
     label: "Data de admissão",
     placeholder: "dd/mm/aaaa",
-    required: false
+    required: false,
+    mask: (e) => {
+      let data = e.target.value;
+
+      if (data.length == 2) {
+        data = data + '/';
+        e.target.value = data;
+        return true;
+      }
+
+      if (data.length == 5) {
+        data = data + '/';
+        e.target.value = data;
+        return true;
+      }
+    }
   },
   {
     type: "text",
@@ -157,7 +230,15 @@ export const referencias = [
     name: "Telefone refencia 1",
     label: "Telefone de Referência 1",
     placeholder: "(xx) xxxxx-xxxx",
-    required: true
+    required: true,
+    mask: (e) => {
+      let tel = e.target.value;
+
+      tel = tel.replace(/\D/g, "");
+      tel = tel.replace(/^(\d{2})(\d)/g, "($1) $2");
+
+      e.target.value = tel;
+    }
   },
   {
     type: "text",
@@ -173,7 +254,15 @@ export const referencias = [
     name: "Telefone de Referência 2",
     label: "Telefone de Referência 2",
     placeholder: "(xx) xxxxx-xxxx",
-    required: true
+    required: true,
+    mask: (e) => {
+      let tel = e.target.value;
+
+      tel = tel.replace(/\D/g, "");
+      tel = tel.replace(/^(\d{2})(\d)/g, "($1) $2");
+
+      e.target.value = tel;
+    }
   },
 ]
 
