@@ -9,7 +9,7 @@ export default function InputText({ props }) {
         name={item.name}
         label={item.label}
         placeholder={item.placeholder}
-        required={false}
+        required={item.required}
         variant="standard"
         fullWidth
         margin="normal"

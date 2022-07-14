@@ -66,7 +66,7 @@ export default function Home() {
           Formulário da Blockton
         </Typography>
 
-        <Stack component="form" ref={formRef} spacing={4} method="POST">
+        <Stack component="form" ref={formRef} spacing={4} method="POST" type="Submit" onSubmit={handleSubmit}>
 
           <Box sx={boxStyle}>
             <InputText props={docPessoal} />
@@ -151,7 +151,6 @@ export default function Home() {
             <LoadingButton
               type="submit"
               size="large"
-              onClick={handleSubmit}
               endIcon={<SendIcon />}
               loading={loading}
               loadingPosition="end"
