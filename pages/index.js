@@ -14,7 +14,7 @@ const boxStyle = { p: 2, border: '1px solid #c4c4c4', borderRadius: '10px' }
 export default function Home() {
   const [loading, setLoading] = useState(false);
   const [civilRadioValue, setCivilRadioValue] = useState("Solteiro")
-  const [addressRadioValue, setAddressRadioValue] = useState("Solteiro")
+  const [addressRadioValue, setAddressRadioValue] = useState("")
 
   const [docImage, setDocImage] = useState()
   const [addressImage, setAddressImage] = useState()
@@ -92,7 +92,7 @@ export default function Home() {
               handleChange={handleCivilRadioChange}
             />
 
-            <InputText props={conjugeInfo} />
+            {civilRadioValue === "Casado" && <InputText props={conjugeInfo} />}
           </Box>
 
           <Box sx={boxStyle}>
