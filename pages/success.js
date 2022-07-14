@@ -11,7 +11,7 @@ export default function Success() {
         </Typography>
 
         <Typography component="p" textAlign="center" my={2}>
-          Seu formulario foi enviado para o Alonsio que entrará em contato com voçê em breve
+          Seu formulario foi enviado para o Alonsio que entrará em contato com você em breve
         </Typography>
 
         <Link href="/">

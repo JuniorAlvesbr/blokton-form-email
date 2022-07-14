@@ -21,34 +21,44 @@ export default async function handler(req, res) {
   }
 
   const body = await handleData(req)
-  const message = createMessage(body)
+  const message = await createMessage(body)
+
 
   sgMail.send(message)
-    .then(res.status(200).send('ok'))
-    .catch(err => res.send(err))
+    .then(response => {
+      res.send("ok")
+      fs.unlinkSync('./public/uploads/docPessoal.jpg')
+      fs.unlinkSync('./public/uploads/docAddress.jpg')
+      fs.unlinkSync('./public/uploads/docSalario.jpg')
+    })
+    .catch(err => {
+      fs.unlinkSync('./public/uploads/docPessoal.jpg')
+      fs.unlinkSync('./public/uploads/docAddress.jpg')
+      fs.unlinkSync('./public/uploads/docSalario.jpg')
+      res.send(err)
+    })
 }
 
 const handleData = (req) => {
-  const form = new formidable.IncomingForm()
+  const form = formidable({ uploadDir: './public/uploads' })
+
   return new Promise(
     function (resolve, reject) {
-      form.uploadDir = './public/uploads'
-      form.keepExtensions = true;
 
       form.parse(req, (err, fields, files) => {
         if (err) return reject(err)
+
+        const renameFiles = (key) => {
+          const oldPath = files[key].filepath
+          const newPath = `./public/uploads/${key}.jpg`
+          fs.rename(oldPath, newPath, (err) => err)
+        }
+
         Object.keys(files).forEach(renameFiles)
         resolve(fields)
       })
     }
   )
-}
-
-const renameFiles = (item) => {
-  console.log(item)
-  const oldPath = files[item].filepath
-  const newPath = `./public/uploads/${item}.jpg`
-  fs.rename(oldPath, newPath, (err) => err)
 }
 
 const createMessage = (body) => {
@@ -61,34 +71,39 @@ const createMessage = (body) => {
     )
   }, "")
 
+  const docsExist = [
+    {
+      name: 'docPessoal.jpg',
+      path: './public/uploads/docPessoal.jpg'
+    },
+    {
+      name: 'docAddress.jpg',
+      path: './public/uploads/docAddress.jpg'
+    },
+    {
+      name: 'docSalario.jpg',
+      path: './public/uploads/docSalario.jpg'
+    },
+  ]
+
+  const getAttachments = docsExist.filter(item => fs.existsSync(item.path))
+
+  const attachments = getAttachments.map(doc => (
+    {
+      content: `${fs.readFileSync(doc.path).toString("base64")}`,
+      filename: `${doc.name}`,
+      type: "image/png",
+      disposition: "attachment",
+      contentId: "imageDocument"
+    }
+  ))
+
   return {
     to: 'jrnalves@gmail.com',
     from: 'jr.junior@live.com',
     subject: `Formulario do ${body.Nome}`,
     text: 'Formulario de dados',
     html: `<div>${message}</div>`,
-    attachments: [
-      {
-        content: `${fs.readFileSync('./public/uploads/docPessoal.jpg').toString("base64")}`,
-        filename: "docPessoal.jpg",
-        type: "image/jpg",
-        disposition: "attachment",
-        contentId: "imageDocument"
-      },
-      {
-        content: `${fs.readFileSync('./public/uploads/docAddress.jpg').toString("base64")}`,
-        filename: "docAddress.jpg",
-        type: "image/jpg",
-        disposition: "attachment",
-        contentId: "imageDocument"
-      },
-      {
-        content: `${fs.readFileSync('./public/uploads/docSalario.jpg').toString("base64")}`,
-        filename: "docSalario.jpg",
-        type: "image/jpg",
-        disposition: "attachment",
-        contentId: "imageDocument"
-      },
-    ]
+    attachments: attachments
   }
 }
