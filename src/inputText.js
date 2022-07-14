@@ -88,19 +88,12 @@ export const conjugeInfo = [
     mask: (e) => {
       let data = e.target.value;
 
-      if (data.length == 2) {
-        data = data + '/';
-        e.target.value = data;
-        return true;
-      }
+      data = data.replace(/\D/g, "")
+      data = data.replace(/(\d{2})(\d)/, "$1/$2");
+      data = data.replace(/(\d{2})(\d)/, "$1/$2");
 
-      if (data.length == 5) {
-        data = data + '/';
-        e.target.value = data;
-        return true;
-      }
+      e.target.value = data;
     }
-
   },
 ]
 
@@ -192,17 +185,11 @@ export const empresa = [
     mask: (e) => {
       let data = e.target.value;
 
-      if (data.length == 2) {
-        data = data + '/';
-        e.target.value = data;
-        return true;
-      }
+      data = data.replace(/\D/g, "")
+      data = data.replace(/(\d{2})(\d)/, "$1/$2");
+      data = data.replace(/(\d{2})(\d)/, "$1/$2");
 
-      if (data.length == 5) {
-        data = data + '/';
-        e.target.value = data;
-        return true;
-      }
+      e.target.value = data;
     }
   },
   {
