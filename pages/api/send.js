@@ -27,20 +27,20 @@ export default async function handler(req, res) {
   sgMail.send(message)
     .then(response => {
       res.send("ok")
-      fs.unlinkSync('./uploads/docPessoal.jpg')
-      fs.unlinkSync('./uploads/docAddress.jpg')
-      fs.unlinkSync('./uploads/docSalario.jpg')
+      fs.unlinkSync('./public/uploads/docPessoal.jpg')
+      fs.unlinkSync('./public/uploads/docAddress.jpg')
+      fs.unlinkSync('./public/uploads/docSalario.jpg')
     })
     .catch(err => {
-      fs.unlinkSync('./uploads/docPessoal.jpg')
-      fs.unlinkSync('./uploads/docAddress.jpg')
-      fs.unlinkSync('./uploads/docSalario.jpg')
+      fs.unlinkSync('./public/uploads/docPessoal.jpg')
+      fs.unlinkSync('./public/uploads/docAddress.jpg')
+      fs.unlinkSync('./public/uploads/docSalario.jpg')
       res.send(err)
     })
 }
 
 const handleData = (req) => {
-  const form = formidable({ uploadDir: './uploads' })
+  const form = formidable({ uploadDir: './public/uploads' })
 
   return new Promise(
     function (resolve, reject) {
@@ -50,7 +50,7 @@ const handleData = (req) => {
 
         const renameFiles = (key) => {
           const oldPath = files[key].filepath
-          const newPath = `./uploads/${key}.jpg`
+          const newPath = `./public/uploads/${key}.jpg`
           fs.rename(oldPath, newPath, (err) => err)
         }
 
@@ -74,15 +74,15 @@ const createMessage = (body) => {
   const docsExist = [
     {
       name: 'docPessoal.jpg',
-      path: './uploads/docPessoal.jpg'
+      path: './public/uploads/docPessoal.jpg'
     },
     {
       name: 'docAddress.jpg',
-      path: './uploads/docAddress.jpg'
+      path: './public/uploads/docAddress.jpg'
     },
     {
       name: 'docSalario.jpg',
-      path: './uploads/docSalario.jpg'
+      path: './public/uploads/docSalario.jpg'
     },
   ]
 
