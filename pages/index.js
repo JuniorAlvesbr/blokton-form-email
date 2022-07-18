@@ -29,7 +29,7 @@ export default function Home() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    setLoading(true)
+    setLoading(false)
 
     const formData = new FormData()
 

@@ -12,6 +12,25 @@ export const config = {
   },
 }
 
+const dirPath = './public/uploads'
+
+const deleteFiles = () => {
+
+  fs.readdir(dirPath, function (err, files) {
+
+    if (err) {
+      return console.log('Unable to scan directory: ' + err);
+    }
+
+    console.log(files)
+
+    const deleteFile = (file) => file !== '.gitkeep' && fs.unlinkSync(`${dirPath}/${file}`)
+
+    files.forEach(deleteFile)
+
+  })
+}
+
 export default async function handler(req, res) {
   const isPost = req.method
 
@@ -20,27 +39,28 @@ export default async function handler(req, res) {
     return
   }
 
+
   const body = await handleData(req)
   const message = await createMessage(body)
 
+  // deleteFiles()
 
   sgMail.send(message)
-    .then(response => {
-      res.send("ok")
-      fs.unlinkSync('./public/uploads/docPessoal.jpg')
-      fs.unlinkSync('./public/uploads/docAddress.jpg')
-      fs.unlinkSync('./public/uploads/docSalario.jpg')
+    .then((response) => {
+      res.send(response)
+      deleteFiles()
     })
     .catch(err => {
-      fs.unlinkSync('./public/uploads/docPessoal.jpg')
-      fs.unlinkSync('./public/uploads/docAddress.jpg')
-      fs.unlinkSync('./public/uploads/docSalario.jpg')
+      deleteFiles()
       res.send(err)
     })
 }
 
 const handleData = (req) => {
-  const form = formidable({ uploadDir: './public/uploads' })
+  const form = formidable({
+    uploadDir: dirPath,
+    keepExtensions: true,
+  })
 
   return new Promise(
     function (resolve, reject) {
@@ -48,13 +68,6 @@ const handleData = (req) => {
       form.parse(req, (err, fields, files) => {
         if (err) return reject(err)
 
-        const renameFiles = (key) => {
-          const oldPath = files[key].filepath
-          const newPath = `./public/uploads/${key}.jpg`
-          fs.rename(oldPath, newPath, (err) => err)
-        }
-
-        Object.keys(files).forEach(renameFiles)
         resolve(fields)
       })
     }
@@ -71,27 +84,17 @@ const createMessage = (body) => {
     )
   }, "")
 
-  const docsExist = [
-    {
-      name: 'docPessoal.jpg',
-      path: './public/uploads/docPessoal.jpg'
-    },
-    {
-      name: 'docAddress.jpg',
-      path: './public/uploads/docAddress.jpg'
-    },
-    {
-      name: 'docSalario.jpg',
-      path: './public/uploads/docSalario.jpg'
-    },
-  ]
+  const getFiles = fs.readdir(dirPath, function (err, files) {
+    if (err) throw err
 
-  const getAttachments = docsExist.filter(item => fs.existsSync(item.path))
+    return files.filter(file => file !== '.gitkeep')
 
-  const attachments = getAttachments.map(doc => (
+  })
+
+  const attachments = getFiles.map(file => (
     {
-      content: `${fs.readFileSync(doc.path).toString("base64")}`,
-      filename: `${doc.name}`,
+      content: `${fs.readFileSync(file.path).toString("base64")}`,
+      filename: `${file.name}`,
       type: "image/png",
       disposition: "attachment",
       contentId: "imageDocument"
