@@ -12,26 +12,9 @@ export const config = {
   },
 }
 
-const dirPath = './public/uploads'
+const pathDir = './public/uploads'
 
-const deleteFiles = () => {
-
-  fs.readdir(dirPath, function (err, files) {
-
-    if (err) {
-      return console.log('Unable to scan directory: ' + err);
-    }
-
-    console.log(files)
-
-    const deleteFile = (file) => file !== '.gitkeep' && fs.unlinkSync(`${dirPath}/${file}`)
-
-    files.forEach(deleteFile)
-
-  })
-}
-
-export default async function handler(req, res) {
+export default async function post(req, res) {
   const isPost = req.method
 
   if (isPost !== 'POST') {
@@ -39,11 +22,8 @@ export default async function handler(req, res) {
     return
   }
 
-
-  const body = await handleData(req)
+  const body = await handleBody(req)
   const message = await createMessage(body)
-
-  // deleteFiles()
 
   sgMail.send(message)
     .then((response) => {
@@ -56,9 +36,9 @@ export default async function handler(req, res) {
     })
 }
 
-const handleData = (req) => {
+const handleBody = (req) => {
   const form = formidable({
-    uploadDir: dirPath,
+    uploadDir: pathDir,
     keepExtensions: true,
   })
 
@@ -74,7 +54,7 @@ const handleData = (req) => {
   )
 }
 
-const createMessage = (body) => {
+const createMessage = async (body) => {
 
   const message = Object.keys(body).reduce((acc, item) => {
     let next = `<div style="padding: 5px">${item}: <strong style="font-size: 16px">${body[item]}</strong></div>`
@@ -84,17 +64,12 @@ const createMessage = (body) => {
     )
   }, "")
 
-  const getFiles = fs.readdir(dirPath, function (err, files) {
-    if (err) throw err
+  const files = await getFiles()
 
-    return files.filter(file => file !== '.gitkeep')
-
-  })
-
-  const attachments = getFiles.map(file => (
+  const attachments = files.map(file => (
     {
-      content: `${fs.readFileSync(file.path).toString("base64")}`,
-      filename: `${file.name}`,
+      content: `${fs.readFileSync(`${pathDir}/${file}`).toString("base64")}`,
+      filename: `${file}`,
       type: "image/png",
       disposition: "attachment",
       contentId: "imageDocument"
@@ -102,11 +77,38 @@ const createMessage = (body) => {
   ))
 
   return {
-    to: ['alonsomaringa@gmail.com', 'alonso.mga@blokton.com.br', 'jrnalves@gmail.com'],
+    to: 'jrnalves@gmail.com',
+    // to: ['alonsomaringa@gmail.com', 'alonso.mga@blokton.com.br', 'jrnalves@gmail.com'],
     from: 'jr.junior@live.com',
     subject: `Formulario do ${body.Nome}`,
     text: 'Formulario de dados',
     html: `<div>${message}</div>`,
     attachments: attachments
   }
+}
+
+const getFiles = () => {
+  return new Promise(
+    function (resolve, reject) {
+      fs.readdir(pathDir, function (err, files) {
+        if (err) return reject(err)
+
+        const filter = files.filter(file => file !== '.gitkeep')
+
+        resolve(filter)
+      })
+    }
+  )
+}
+
+const deleteFiles = () => {
+  fs.readdir(pathDir, function (err, files) {
+    if (err) {
+      return console.log('Unable to scan directory: ' + err);
+    }
+
+    const deleteFile = (file) => file !== '.gitkeep' && fs.unlinkSync(`${pathDir}/${file}`)
+
+    files.forEach(deleteFile)
+  })
 }
