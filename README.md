@@ -1,46 +1,26 @@
-# Next.js example
+# Form-Email
+[ACESSAR O APLICATIVO](https://form-email-nextjs.herokuapp.com/)
+![Alt Text](/public/form-email.png)
 
-## How to use
+![HTML](https://img.shields.io/badge/HTML-HTML5-orange) ![CSS](https://img.shields.io/badge/STYLE-CSS3-blue) ![Javascript](https://img.shields.io/badge/JavaScript-JavaScript-yellow) ![React](https://img.shields.io/badge/React-js-%2361dafb) ![MaterialUI](https://img.shields.io/badge/Material-UI-blue)
+# Descrição:
+É um formulario criado para coletar informações de clientes interessados em simular financiamentos para compra de moto.
 
-Download the example [or clone the repo](https://github.com/mui/material-ui):
+# Descrição técnica
+Este projeto foi criado com NEXTJS, utilizando todo o potencial do REACT e Material UI para components de HTML e CSS.
 
-<!-- #default-branch-switch -->
+# Aprendizado
+Neste projeto tive vários desafios, entre eles destaco:
+ - Integração do Material UI com nextjs
+ - Contrução da inteface de forma responsiva com material UI
+ - Coleta da informação com os hooks do react criando um arquivo json.
+   - partes da interface é dinamica e se altera conforme resposta do usuario
+ - Coleta da Foto dos documentos utilizando api do brownser e da camera do celular
+  - Foi criado um preview das fotos para que usuario pude-se validar a foto do usuario
+ - Envio da foto para o backend usando formData.
+ - Criação de uma api no next em que recebe os dados coletados e as fotos e envia um email com todos os dados para os vendedores.
+ - No deploy da aplicação, foi constatado que a vercel não recebe arquivos como fotos no backend, pois não temos opção de gravação no fileSystem, para contornar, o app foi hospedado na heroku.
 
-```sh
-curl https://codeload.github.com/mui/material-ui/tar.gz/master | tar -xz --strip=2  material-ui-master/examples/nextjs
-cd nextjs
-```
-
-Install it and run:
-
-```sh
-npm install
-npm run dev
-```
-
-or:
-
-<!-- #default-branch-switch -->
-
-[![Edit on StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/mui/material-ui/tree/master/examples/nextjs)
-
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/mui/material-ui/tree/master/examples/nextjs)
-
-## The idea behind the example
-
-The project uses [Next.js](https://github.com/vercel/next.js), which is a framework for server-rendered React apps.
-It includes `@mui/material` and its peer dependencies, including `emotion`, the default style engine in MUI v5.
-If you prefer, you can [use styled-components instead](https://mui.com/material-ui/guides/interoperability/#styled-components).
-
-## The link component
-
-Next.js has [a custom Link component](https://nextjs.org/docs/api-reference/next/link).
-The example folder provides adapters for usage with MUI.
-More information [in the documentation](https://mui.com/material-ui/guides/routing/#next-js).
-
-## What's next?
-
-<!-- #default-branch-switch -->
-
-You now have a working example project.
-You can head back to the documentation, continuing browsing it from the [templates](https://mui.com/material-ui/getting-started/templates/) section.
+# Autor: Junior Alves
+![LinkdIn](https://img.shields.io/badge/LinkedIn-Junior%20Alves-blue?link=https://img.shields.io/badge/LinkedIn-Junior%20Alves-blue)
+![gmail](https://img.shields.io/badge/Gmail-jrnalves%40gmail.com-red)
