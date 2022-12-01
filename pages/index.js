@@ -63,7 +63,7 @@ export default function Home() {
     <Container maxWidth="md">
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom align='center' color="primary.main">
-          Formulário da Blockton
+          Formulário da Blokton
         </Typography>
 
         <Stack component="form" ref={formRef} spacing={4} method="POST" type="Submit" onSubmit={handleSubmit}>
