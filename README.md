@@ -15,7 +15,7 @@
  - Foi utilizado o proprio backend do NEXT para receber as informações do formulario por API REST.
  - Com Nodejs utilizando a biblioteca FORMIDABLE foi possivel manipular e montar o email com as informações do formulario e as fotos.
  - Após email pronto, as informações são enviadas para o vendedor cadastrado na aplicação.
- - Aplicação esta rodando na HEROKU.
+ - Aplicação esta rodando na RENDER, render.com.
 
 # Aprendizado
 Neste projeto tive vários desafios, entre eles destaco:
