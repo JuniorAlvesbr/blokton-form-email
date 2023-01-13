@@ -27,7 +27,8 @@ Neste projeto tive vários desafios, entre eles destaco:
   - Foi criado um preview das fotos para que usuario valide a foto
  - Envio da foto para o backend usando formData.
  - Criação de uma api no next em que recebe os dados coletados e as fotos e envia um email com todos os dados para os vendedores.
- - No deploy da aplicação, foi constatado que a vercel não recebe arquivos como fotos no backend, pois não temos opção de gravação no fileSystem, para contornar, o app foi hospedado na heroku.
+ - No deploy da aplicação, foi constatado que a vercel não recebe arquivos como fotos no backend, pois não temos opção de gravação no fileSystem, para contornar, o app foi hospedado a principio na heroku, porem agora esta hospedado na Render.com.
+ - O deploy é utilizado com método CI/CD
 
 # Autor: Junior Alves
 ![LinkdIn](https://img.shields.io/badge/LinkedIn-Junior%20Alves-blue?link=https://img.shields.io/badge/LinkedIn-Junior%20Alves-blue)
