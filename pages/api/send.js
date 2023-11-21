@@ -76,7 +76,7 @@ const createMessage = async (body) => {
 
   return {
     from: 'Formulario <onboarding@resend.dev>',
-    to: ['jrnalves@gmail.com'],
+    to: ['alonsomaringa@gmail.com'],
     subject: `Formulario do ${body.Nome}`,
     text: 'Formulario de dados',
     html: `<div>${message}</div>`,
