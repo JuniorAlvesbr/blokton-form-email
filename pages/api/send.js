@@ -1,9 +1,9 @@
 import formidable from 'formidable'
 import fs from 'fs'
-import sgMail from '@sendgrid/mail'
+import { Resend } from 'resend'
 
 // Config API KEY
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+const resend = new Resend(`${process.env.RESEND_API_KEY}`)
 
 // Set bodyParse to false for nextjs
 export const config = {
@@ -12,7 +12,8 @@ export const config = {
   },
 }
 
-const pathDir = './public/uploads'
+//config Upload Path Dir
+const uploadPathDir = './public/uploads'
 
 export default async function post(req, res) {
   const isPost = req.method
@@ -25,10 +26,10 @@ export default async function post(req, res) {
   const body = await handleBody(req)
   const message = await createMessage(body)
 
-  sgMail.send(message)
-    .then((response) => {
-      res.send(response)
+  resend.emails.send(message)
+    .then(response => {
       deleteFiles()
+      res.send(response)
     })
     .catch(err => {
       deleteFiles()
@@ -38,7 +39,7 @@ export default async function post(req, res) {
 
 const handleBody = (req) => {
   const form = formidable({
-    uploadDir: pathDir,
+    uploadDir: uploadPathDir,
     keepExtensions: true,
   })
 
@@ -66,30 +67,27 @@ const createMessage = async (body) => {
 
   const files = await getFiles()
 
-  const attachments = files.map(file => (
+  const attachedFiles = await files.map(file => (
     {
-      content: `${fs.readFileSync(`${pathDir}/${file}`).toString("base64")}`,
-      filename: `${file}`,
-      type: "image/png",
-      disposition: "attachment",
-      contentId: "imageDocument"
+      filename: file,
+      content: fs.readFileSync(`${uploadPathDir}/${file}`)
     }
   ))
 
   return {
-    to: ['alonsomaringa@gmail.com', 'alonso.mga@blokton.com.br', 'jrnalves@gmail.com'],
-    from: 'jr.junior@live.com',
+    from: 'Formulario <onboarding@resend.dev>',
+    to: ['jrnalves@gmail.com'],
     subject: `Formulario do ${body.Nome}`,
     text: 'Formulario de dados',
     html: `<div>${message}</div>`,
-    attachments: attachments
+    attachments: attachedFiles
   }
 }
 
 const getFiles = () => {
   return new Promise(
     function (resolve, reject) {
-      fs.readdir(pathDir, function (err, files) {
+      fs.readdir(uploadPathDir, function (err, files) {
         if (err) return reject(err)
 
         const filter = files.filter(file => file !== '.gitkeep')
@@ -101,12 +99,12 @@ const getFiles = () => {
 }
 
 const deleteFiles = () => {
-  fs.readdir(pathDir, function (err, files) {
+  fs.readdir(uploadPathDir, function (err, files) {
     if (err) {
       return console.log('Unable to scan directory: ' + err);
     }
 
-    const deleteFile = (file) => file !== '.gitkeep' && fs.unlinkSync(`${pathDir}/${file}`)
+    const deleteFile = (file) => file !== '.gitkeep' && fs.unlinkSync(`${uploadPathDir}/${file}`)
 
     files.forEach(deleteFile)
   })
