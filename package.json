@@ -23,7 +23,8 @@
     "next": "latest",
     "prop-types": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "resend": "^2.0.0"
   },
   "devDependencies": {
     "eslint": "latest",
