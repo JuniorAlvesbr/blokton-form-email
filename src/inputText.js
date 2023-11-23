@@ -27,6 +27,14 @@ export const docPessoal = [
   },
   {
     type: "text",
+    id: "cidadeNasc",
+    name: "cidadeNasc",
+    label: "Cidade de Nascimento",
+    placeholder: "Cidade de Nascimento",
+    required: true
+  },
+  {
+    type: "text",
     id: "celular",
     name: "Celular",
     label: "Celular",
@@ -209,7 +217,7 @@ export const referencias = [
     name: "Referencia Pessoal 1",
     label: "Nome de Referência 1",
     placeholder: "",
-    required: true
+    required: false
   },
   {
     type: "text",
@@ -217,7 +225,7 @@ export const referencias = [
     name: "Telefone refencia 1",
     label: "Telefone de Referência 1",
     placeholder: "(xx) xxxxx-xxxx",
-    required: true,
+    required: false,
     mask: (e) => {
       let tel = e.target.value;
 
@@ -233,7 +241,7 @@ export const referencias = [
     name: "Referencia Pessoal 2",
     label: "Nome de Referência 2",
     placeholder: "",
-    required: true
+    required: false
   },
   {
     type: "text",
@@ -241,7 +249,7 @@ export const referencias = [
     name: "Telefone de Referência 2",
     label: "Telefone de Referência 2",
     placeholder: "(xx) xxxxx-xxxx",
-    required: true,
+    required: false,
     mask: (e) => {
       let tel = e.target.value;
 
